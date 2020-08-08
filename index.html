@@ -197,5 +197,22 @@
             <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
+        <p>
+            It's a bit fast, plus it's going in the wrong direction.
+            This is probably another scaling issue.
+            Here I experimentally determined that division by 8 produced a similar effect to Quake.
+            The back texture also needs to be scrolled at a slower speed than the front one to produce the parallax effect.
+            Finally, flipping some signs fixes the direction.
+        </p>
+        <pre>
+            float scroll = uniforms.elapsedS / 8;
+            outTexCoordFront = vec2(scroll + dir.x, scroll - dir.z);
+            scroll /= 2;
+            outTexCoordBack = vec2(scroll + dir.x, scroll - dir.z);
+        </pre>
+        <video controls width="800">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky_2.webm" type="video/webm">
+            Sorry, your browser doesn't support embedded videos.
+        </video>
     </body>
 </html>
