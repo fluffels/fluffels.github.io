@@ -182,5 +182,20 @@
             Up close, the problem is a bit more clear.
         </p>
         <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_close.png" />
+        <p>
+            It's still not obvious what's wrong.
+            Maybe adding animation will make it more so.
+            This is done by simply offsetting the texture coordinates by some time dependent variable.
+            First a uniform with the current elapsed time needs to be added.
+        </p>
+        <pre>
+            float scroll = uniforms.elapsedS;
+
+            texCoord = vec2(scroll + dir.x, scroll + dir.z);
+        </pre>
+        <video controls width="800">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky.webm" type="video/webm">
+            Sorry, your browser doesn't support embedded videos.
+        </video>
     </body>
 </html>
