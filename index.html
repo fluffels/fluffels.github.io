@@ -32,6 +32,10 @@
             p {
                 text-align: justify;
             }
+
+            img {
+                width: 100%;
+            }
         </style>
     </head>
     <body>
@@ -51,6 +55,15 @@
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
+            Next some details I could gather about how Quake renders skies:
+            <ul>
+                <li><a href="http://www.celephais.net/stuff/texturefaq.htm">Quake sky textures are 128x256, where the left half is a "front" texture and the right half is a "back" texture</a>
+                <li>Scrolling these textures at different rates gives a <a href="https://en.wikipedia.org/wiki/Parallax">parallax</a> effect that gives the sky some depth.
+                <li><a href="http://www.gamers.org/dEngine/quake/spec/quake-spec34/qkspec_4.htm">The Sky effect is achieved by pretending the viewer is farther away than they actually are.</a>
+            </ul>
+        </p>
+        <p>
+            Not really enough information to recreate the effect so I decided to take a look at how vkQuake does it.
             RenderDoc shows roughly how the level is rendered.
         </p>
         <video controls width="800">
@@ -58,18 +71,31 @@
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
-            The provoking vertices for the sky look like this:
+            vkQuake renders a simple flat-colored version of the sky and then fills it in.
+            Setting <pre>r_fastsky</pre> will skip the second step, presumably offering some performance improvements.
+            Since modern hardware is so fast, this can be left out.
+        </p>
+        <p>
+            The detailed pass is somewhat odd in that it is rendering several small squares instead of the same regions filled in by the fastsky pass.
+            These squares are not present in the actual BSP file for the level.
+            The BSP geometry looks something like this:
         </p>
         <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_geom_rd.jpeg" />
         <p>
-            So the sky is actually just a some polygons that plug the hole where the window / skylight should be.
+            vkQuake generates these tiles at runtime from the extents of the whole skybox.
+            I.e. the minimum and maximum of the skybox along each of the X, Y and Z axes.
+            Each skybox face is aligned along one of these axes.
+            So when it is time to render that face it is extended along the extents for that axis and split up into tiles before being rendered.
+            See <a href="https://github.com/Novum/vkQuake/blob/master/Quake/gl_sky.c">gl_sky.c</a> for more detail.
         </p>
         <p>
-            As described <a href="http://www.celephais.net/stuff/texturefaq.htm">here</a> Quake sky textures are 128x256, where the left half is a "front" texture and the right half is a "back" texture.
-            Scrolling these textures at different rates gives a <a href="https://en.wikipedia.org/wiki/Parallax">parallax</a> effect that gives the sky some depth.
+            This is somewhat complicated and results in some overdraw.
+            Maybe there is a simpler approach?
         </p>
         <p>
-            Further, as described <a href="http://www.gamers.org/dEngine/quake/spec/quake-spec34/qkspec_4.htm">here</a> the Sky effect is achieved by pretending the viewer is farther away than they actually are.
+            It shouldn't be necessary to render these squares since the entire area to be filled is covered by the sky meshes that are already present in the BSP.
+            Simply rendering them with no animation and with the normal Quake texture coordinates results in this:
         </p>
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture.jpeg" />
     </body>
 </html>
