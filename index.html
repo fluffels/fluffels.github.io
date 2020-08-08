@@ -72,7 +72,7 @@
         </video>
         <p>
             vkQuake renders a simple flat-colored version of the sky and then fills it in.
-            Setting <pre>r_fastsky</pre> will skip the second step, presumably offering some performance improvements.
+            Setting <code>r_fastsky</code> will skip the second step, presumably offering some performance improvements.
             Since modern hardware is so fast, this can be left out.
         </p>
         <p>
@@ -156,10 +156,10 @@
             }
         </pre>
         <p>
-            The <pre>length</pre> variable here is using the dot product to compute the square of the magnitude of the vector.
-            The call to <pre>sqrt</pre> converts this to the magnitude.
+            The <code>length</code> variable here is using the dot product to compute the square of the magnitude of the vector.
+            The call to <code>sqrt</code> converts this to the magnitude.
             Next it is multiplied by 6*63.
-            Finally <pre>length</pre> is multiplied by the X and Z axes of the <pre>dir</pre> vector.
+            Finally <code>length</code> is multiplied by the X and Z axes of the <code>dir</code> vector.
             This is doing the same as normalizing the vector and then scaling it by a constant.
             Multiplying the Y axis is skipped since it's not used in the final calculation.
         </p>
@@ -168,7 +168,7 @@
             This is necessary to go from world space coordinates to texture coordinates.
         </p>
         <p>
-            The <pre>scroll</pre> variable has to do with the animation effect so it can be ignored for now.
+            The <code>scroll</code> variable has to do with the animation effect so it can be ignored for now.
         </p>
         <p>
             So all that should be necessary to fix the scaling would be a multiplication by 6*63 and a division by 128.
