@@ -57,5 +57,19 @@
             <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/vkquake_sky_rd.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
+        <p>
+            The provoking vertices for the sky look like this:
+        </p>
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_geom_rd.jpeg" />
+        <p>
+            So the sky is actually just a some polygons that plug the hole where the window / skylight should be.
+        </p>
+        <p>
+            As described <a href="http://www.celephais.net/stuff/texturefaq.htm">here</a> Quake sky textures are 128x256, where the left half is a "front" texture and the right half is a "back" texture.
+            Scrolling these textures at different rates gives a <a href="https://en.wikipedia.org/wiki/Parallax">parallax</a> effect that gives the sky some depth.
+        </p>
+        <p>
+            Further, as described <a href="http://www.gamers.org/dEngine/quake/spec/quake-spec34/qkspec_4.htm">here</a> the Sky effect is achieved by pretending the viewer is farther away than they actually are.
+        </p>
     </body>
 </html>
