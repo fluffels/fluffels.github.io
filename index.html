@@ -96,6 +96,86 @@
             It shouldn't be necessary to render these squares since the entire area to be filled is covered by the sky meshes that are already present in the BSP.
             Simply rendering them with no animation and with the normal Quake texture coordinates results in this:
         </p>
-        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture.jpeg" />
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture.jpg" />
+        <p>
+            This screenshot shows what the actual level geometry looks like, but the perspective incorrect.
+            The sky is supposed to be very far away from the observer.
+            Here, since it is part of the level geometry it is actually really close.
+            Luckily there is a way to fake this distance without messing with the actual vertices.
+        </p>
+        <p>
+            If the observer is very far away from the sky then the position of the observer should not have any effect on how it is displayed.
+            If you're out walking you don't see clouds getting any closer.
+            It's like they're fixed in place.
+            However, turning your head will show you different parts of the sky.
+            So the part of the texture we're rendering depends only on the vector between the point being rendered and the observer.
+        </p>
+        <p>
+            I passed the location of the camera as a uniform and subtracted it from the position to get this vector:
+        </p>
+        <pre>
+            vec3 dir = inPosition - uniforms.origin;
+        </pre>
+        <p>
+            Next, the vector should be normalized.
+            This is because the sky is supposed to be very far away, so how close you actually are to the point should have no effect on the final calculation.
+        </p>
+        <pre>
+            dir = normalize(dir);
+        </pre>
+        <p>
+            Finally project the vector onto the texture space.
+            (Actually the front and back texture need separate tex coords, but for now set them to the same vector.)
+        </p>
+        <pre>
+            vec2 texCoord = vec2(dir.x, dir.z);
+        </pre>
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_2.png" />
+        <p>
+            This looks vaguely correct, except the scale is slightly off and it's not animated.
+            There isn't really a way to reverse engineer the scale, but looking at vkQuake source gives the following for computing the texture coordinates:
+        </p>
+        <pre>
+            void Sky_GetTexCoord (vec3_t v, float speed, float *s, float *t)
+            {
+                vec3_t	dir;
+                float	length, scroll;
+
+                VectorSubtract (v, r_origin, dir);
+                dir[2] *= 3;	// flatten the sphere
+
+                length = dir[0]*dir[0] + dir[1]*dir[1] + dir[2]*dir[2];
+                length = sqrt (length);
+                length = 6*63/length;
+
+                scroll = cl.time*speed;
+                scroll -= (int)scroll & ~127;
+
+                *s = (scroll + dir[0] * length) * (1.0/128);
+                *t = (scroll + dir[1] * length) * (1.0/128);
+            }
+        </pre>
+        <p>
+            The <pre>length</pre> variable here is using the dot product to compute the square of the magnitude of the vector.
+            The call to <pre>sqrt</pre> converts this to the magnitude.
+            Next it is multiplied by 6*63.
+            Finally <pre>length</pre> is multiplied by the X and Z axes of the <pre>dir</pre> vector.
+            This is doing the same as normalizing the vector and then scaling it by a constant.
+            Multiplying the Y axis is skipped since it's not used in the final calculation.
+        </p>
+        <p>
+            The multiplication by 1/128 is scaling by the height/width of the texture.
+            This is necessary to go from world space coordinates to texture coordinates.
+        </p>
+        <p>
+            The <pre>scroll</pre> variable has to do with the animation effect so it can be ignored for now.
+        </p>
+        <p>
+            So all that should be necessary to fix the scaling would be a multiplication by 6*63 and a division by 128.
+        </p>
+        <pre>
+            vec3 dir = normalize(dir) * 6*63 / 128.f;
+        </pre>
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_3.png" />
     </body>
 </html>
