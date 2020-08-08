@@ -1,6 +1,61 @@
-Hello, world!
+<html lang="en">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <title>
+            Quake Sky
+        </title>
+        <style type="text/css">
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+                background-color: #eee8d5;
+                color: #073642;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
 
-<video controls width="640">
-    <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/vkquake_sky.webm" type="video/webm">
-    Sorry, your browser doesn't support embedded videos.
-</video>
+            a {
+                color: #268bd2;
+                text-decoration: none;
+            }
+
+            a:visited {
+                color: #268bd2;
+            }
+
+            a:hover {
+                color: #268bd2;
+                text-decoration: underline;
+            }
+
+            p {
+                text-align: justify;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Quake Sky</h1>
+        <p>
+            Recently I've been working on a <a href="https://github.com/fluffels/kwark">Quake BSP renderer</a>.
+            I've been trying to reverse engineer as much as I can from descriptions of the Quake engine found on the internet.
+            One thing that's not described very well is how Quake handles the sky.
+            This post will describe how this is implemented in other engines and how I ended up implementing it.
+        </p>
+        <p>
+            First a video of how it should look.
+            This is taken from the intro level in <a href="https://github.com/Novum/vkQuake">vkQuake</a>.
+        </p>
+        <video controls width="800">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/vkquake_sky.webm" type="video/webm">
+            Sorry, your browser doesn't support embedded videos.
+        </video>
+        <p>
+            RenderDoc shows roughly how the level is rendered.
+        </p>
+        <video controls width="800">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/vkquake_sky_rd.webm" type="video/webm">
+            Sorry, your browser doesn't support embedded videos.
+        </video>
+    </body>
+</html>
