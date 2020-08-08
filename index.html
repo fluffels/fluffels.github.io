@@ -272,7 +272,7 @@
                 vec3 dir = inDir;
                 dir.y *= 3;
                 dir = normalize(dir) * 6*63 / 128.f;
-            
+
                 float scroll = uniforms.elapsedS / 8.f;
                 vec2 texCoordFront = vec2(scroll + dir.x, scroll - dir.z);
 
@@ -289,8 +289,8 @@
             }
         </pre>
         <p>
-            Note some minor refinements.
-            I added the <code>dir.y *= 3</code> from the vkQuake code.
+            Note a minor refinement is that I added the <code>dir.y *= 3</code> from the vkQuake code.
+            Not adding this results in a much more curved sky.
             Similarly the <code>scroll</code> value has been tweaked a bit.
             Finally if the front color is close enough to black it's swapped for the back color.
             (These textures are masked such that black colors are supposed to be transparent).
