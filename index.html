@@ -37,6 +37,7 @@
                 width: 100%;
             }
         </style>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     </head>
     <body>
         <h1>Quake Sky</h1>
@@ -113,21 +114,21 @@
         <p>
             I passed the location of the camera as a uniform and subtracted it from the position to get this vector:
         </p>
-        <pre>
+        <pre class="prettyprint">
             vec3 dir = inPosition - uniforms.origin;
         </pre>
         <p>
             Next, the vector should be normalized.
             This is because the sky is supposed to be very far away, so how close you actually are to the point should have no effect on the final calculation.
         </p>
-        <pre>
+        <pre class="prettyprint">
             dir = normalize(dir);
         </pre>
         <p>
             Finally project the vector onto the texture space.
             (Actually the front and back texture need separate tex coords, but for now set them to the same vector.)
         </p>
-        <pre>
+        <pre class="prettyprint">
             vec2 texCoord = vec2(dir.x, dir.z);
         </pre>
         <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_2.png" />
@@ -135,7 +136,7 @@
             This looks vaguely correct, except the scale is slightly off and it's not animated.
             There isn't really a way to reverse engineer the scale, but looking at vkQuake source gives the following for computing the texture coordinates:
         </p>
-        <pre>
+        <pre class="prettyprint">
             void Sky_GetTexCoord (vec3_t v, float speed, float *s, float *t)
             {
                 vec3_t	dir;
@@ -173,7 +174,7 @@
         <p>
             So all that should be necessary to fix the scaling would be a multiplication by 6*63 and a division by 128.
         </p>
-        <pre>
+        <pre class="prettyprint">
             vec3 dir = normalize(dir) * 6*63 / 128.f;
         </pre>
         <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_3.png" />
@@ -188,7 +189,7 @@
             This is done by simply offsetting the texture coordinates by some time dependent variable.
             First a uniform with the current elapsed time needs to be added.
         </p>
-        <pre>
+        <pre class="prettyprint">
             float scroll = uniforms.elapsedS;
 
             texCoord = vec2(scroll + dir.x, scroll + dir.z);
@@ -204,7 +205,7 @@
             The back texture also needs to be scrolled at a slower speed than the front one to produce the parallax effect.
             Finally, flipping some signs fixes the direction.
         </p>
-        <pre>
+        <pre class="prettyprint">
             float scroll = uniforms.elapsedS / 8;
             outTexCoordFront = vec2(scroll + dir.x, scroll - dir.z);
             scroll /= 2;
@@ -228,7 +229,7 @@
             This kind of thing can happen with Gouraud shading as well and the solution there is to interpolate normals and perform the final calculation in the fragment shader.
             Moving the final calculations to the fragment shader yields a vertex shader that looks like this:
         </p>
-        <pre>
+        <pre class="prettyprint">
             #version 450
             #extension GL_ARB_separate_shader_objects : enable
 
@@ -255,7 +256,7 @@
             All that's being done here is computing the vector from the camera to the vertex, which is then interpolated before being passed to the fragment shader.
             That fragment shader looks like this:
         </p>
-        <pre>
+        <pre class="prettyprint">
             #version 450
             #extension GL_ARB_separate_shader_objects : enable
 
