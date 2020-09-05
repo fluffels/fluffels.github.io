@@ -161,6 +161,7 @@
             The call to <code>sqrt</code> converts this to the magnitude.
             Next it is multiplied by 6*63.
             Finally <code>length</code> is multiplied by the X and Z axes of the <code>dir</code> vector.
+            (Note that in the Quake sources, Z is the 2nd axis and Y is the 3rd.)
             This is doing the same as normalizing the vector and then scaling it by a constant.
             Multiplying the Y axis is skipped since it's not used in the final calculation.
         </p>
