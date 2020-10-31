@@ -76,7 +76,7 @@
             RenderDoc shows roughly how the level is rendered.
         </p>
         <video controls width="800">
-            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/vkquake_sky_rd.webm" type="video/webm">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/vkquake_sky_rd.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
@@ -89,7 +89,7 @@
             These squares are not present in the actual BSP file for the level.
             The BSP geometry looks something like this:
         </p>
-        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_geom_rd.jpeg" />
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/sky_geom_rd.jpeg" />
         <p>
             vkQuake generates these tiles at runtime from the extents of the whole skybox.
             I.e. the minimum and maximum of the skybox along each of the X, Y and Z axes.
@@ -105,7 +105,7 @@
             It shouldn't be necessary to render these squares since the entire area to be filled is covered by the sky meshes that are already present in the BSP.
             Simply rendering them with no animation and with the normal Quake texture coordinates results in this:
         </p>
-        <img src="https://raw.githubusercontent.com/fluffels/fluffels.github.io/master/sky_texture.jpg" />
+        <img src="https://raw.githubusercontent.com/fluffels/fluffels.github.io/master/quakeSky/sky_texture.jpg" />
         <p>
             This screenshot shows what the actual level geometry looks like, but the perspective is incorrect.
             The sky is supposed to be infinitely far away from the observer.
@@ -139,7 +139,7 @@
         <pre class="prettyprint">
             vec2 texCoord = vec2(dir.x, dir.z);
         </pre>
-        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_2.png" />
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/sky_texture_2.png" />
         <p>
             This looks vaguely correct, except the scale is slightly off and it's not animated.
             There isn't really a way to reverse engineer the scale, but looking at vkQuake source gives the following for computing the texture coordinates:
@@ -186,12 +186,12 @@
         <pre class="prettyprint">
             vec3 dir = normalize(dir) * 6*63 / 128.f;
         </pre>
-        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_3.png" />
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/sky_texture_3.png" />
         <p>
             This looks better but still odd.
             Up close, the problem is a bit more clear.
         </p>
-        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/sky_texture_close.png" />
+        <img src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/sky_texture_close.png" />
         <p>
             It's still not obvious what's wrong.
             Maybe adding animation will make it more so.
@@ -204,7 +204,7 @@
             texCoord = vec2(scroll + dir.x, scroll + dir.z);
         </pre>
         <video controls width="800">
-            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky.webm" type="video/webm">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/kwark_sky.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
@@ -221,14 +221,14 @@
             outTexCoordBack = vec2(scroll + dir.x, scroll - dir.z);
         </pre>
         <video controls width="800">
-            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky_2.webm" type="video/webm">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/kwark_sky_2.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
             Or, more closely:
         </p>
         <video controls width="800">
-            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky_3.webm" type="video/webm">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/kwark_sky_3.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
@@ -307,7 +307,7 @@
             This results in an effect that looks like this:
         </p>
         <video controls width="800">
-            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/kwark_sky_4.webm" type="video/webm">
+            <source src="https://media.githubusercontent.com/media/fluffels/fluffels.github.io/master/quakeSky/kwark_sky_4.webm" type="video/webm">
             Sorry, your browser doesn't support embedded videos.
         </video>
         <p>
