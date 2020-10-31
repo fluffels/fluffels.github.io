@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"> 
+<url>
+  <loc>https://fluffels.github.io/quakeSky/</loc>
+  <changefreq>monthly</changefreq>
+  <lastmod>2020-10-31</lastmod>
+</url>
+<url>
+  <loc>https://fluffels.github.io/vulkanMesh/</loc>
+  <changefreq>monthly</changefreq>
+  <lastmod>2020-10-31</lastmod>
+</url>
+</urlset>
