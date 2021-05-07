@@ -1,0 +1,111 @@
+<html lang="en">
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177466360-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-177466360-1');
+        </script>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <title>
+            Screen-space orthographic projection matrix
+        </title>
+        <style type="text/css">
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+                background-color: #eee8d5;
+                color: #073642;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            a {
+                color: #268bd2;
+                text-decoration: none;
+            }
+
+            a:visited {
+                color: #268bd2;
+            }
+
+            a:hover {
+                color: #268bd2;
+                text-decoration: underline;
+            }
+
+            p {
+                text-align: justify;
+            }
+
+            img {
+                width: 100%;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    </head>
+    <body>
+        <h1>Screen-space orthographic projection</h1>
+        <p>
+            This matrix is used to convert from screen-space (pixel) coordinates to normalized device coordinates (NDC)
+            for Vulkan.
+        </p>
+        <p>
+            <math xmlns = "http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                    <mi>P</mi>
+                    <mo>=</mo>
+                    <mo>[</mo>
+                    <mtable>
+                        <mtr>
+                            <mtd><mfrac><mn>2</mn><mi>w</mi></mfrac></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>-1</mi></mtd>
+                        </mtr>
+                        <mtr>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mfrac><mn>2</mn><mi>h</mi></mfrac></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>-1</mi></mtd>
+                        </mtr>
+                        <mtr>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>0</mi></mtd>
+                        </mtr>
+                        <mtr>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>0</mi></mtd>
+                            <mtd><mi>1</mi></mtd>
+                        </mtr>
+                    </mtable>
+                    <mo>]</mo>
+                </mrow>
+            </math>
+        </p>
+        <p>
+            This matrix is useful for displaying text in 3D engines.
+        </p>
+        <p>
+            Where <i>w</i> is the width of the screen in pixels, <i>h</i> is the height of the screen in pixels,
+            this matrix maps X coordinates in the range 0&hellip;<i>w</i> to the range -1&hellip;1 and
+            Y coordinates in the range 0&hellip;<i>h</i> to the same range.
+            The Z-coordinate is discarded since it is unnecessary for displaying text.
+            The W-coordinate is kept the same for the perspective division.
+            <a href="https://www.wolframalpha.com/input/?i=%7B%7B2%2Fw%2C+0%2C+0%2C+-1%7D%2C+%7B0%2C+2%2Fh%2C+0%2C+-1%7D%2C+%7B0%2C+0%2C+0%2C+0%7D%2C+%7B0%2C+0%2C+0%2C+1%7D%7D+*+%7Bx%2C+y%2C+z%2C+1%7D">Proof.</a>
+        </p>
+        <p>
+            Here are some examples:
+            <ul>
+                <li><a href="https://www.wolframalpha.com/input/?i=%7B%7B2%2F1920%2C+0%2C+0%2C+-1%7D%2C+%7B0%2C+2%2F1080%2C+0%2C+-1%7D%2C+%7B0%2C+0%2C+0%2C+0%7D%2C+%7B0%2C+0%2C+0%2C+1%7D%7D+*+%7B0%2C+0%2C+z%2C+1%7D">map from the top-left of the screen to the top-left of NDC</a></li>
+                <li><a href="https://www.wolframalpha.com/input/?i=%7B%7B2%2F1920%2C+0%2C+0%2C+-1%7D%2C+%7B0%2C+2%2F1080%2C+0%2C+-1%7D%2C+%7B0%2C+0%2C+0%2C+0%7D%2C+%7B0%2C+0%2C+0%2C+1%7D%7D+*+%7B1920%2C+1080%2C+z%2C+1%7D">map from the bottom-right of the screen to the bottom-right of NDC</a></li>
+            </ul>
+        </p>
+    </body>
+</html>
